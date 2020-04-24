@@ -23,7 +23,7 @@ const trimAndRemoveQuotes = function(data) {
 
 // without using library
 fs.readFile(filepath, 'utf8', function (err, data) {
-  // set up object literal for JSON data
+
   // An array consisting of each student data as strings
   const dataArray = data.split(/\r?\n/);
   // the first line in the array is the column header(title), while the cleansedArray is the data
@@ -39,7 +39,6 @@ fs.readFile(filepath, 'utf8', function (err, data) {
   // array destructuring to get column header(title) 
   const [lastName, firstName, SSN, Test1, Test2, Test3, Test4, final, grade] = columnHeaderArray
  
-
   const formattedDataInArray = cleansedArray.map(student => trimAndRemoveQuotes(student)) 
 
   // create a loop to create JSON data
@@ -47,7 +46,7 @@ fs.readFile(filepath, 'utf8', function (err, data) {
     const studentNumber = entry[2]
     
     jsonResult[studentNumber] = {}
-
+    // Can make into a function
     jsonResult[studentNumber][lastName] = entry[0]
     jsonResult[studentNumber][firstName] = entry[1]
     jsonResult[studentNumber][SSN] = entry[2]
