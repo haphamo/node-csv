@@ -58,24 +58,21 @@ fs.readFile(filepath, 'utf8', function (err, data) {
     return a
   })
 
-
-
-  const test = {}
+  // init JSON
+  const jsonResult = {}
 
   // create a loop to create JSON data
 
-  test[c[0][2]] = {}
+  jsonResult[c[0][2]] = {}
 
-  test[c[0][2]][lastName] = c[0][0]
-  test[c[0][2]][firstName] = c[0][1]
-  test[c[0][2]][SSN] = c[0][2]
-  test[c[0][2]][Test1] = c[0][3]
-  test[c[0][2]][Test2] = c[0][4]
-  test[c[0][2]][Test3] = c[0][5]
-  test[c[0][2]][Test4] = c[0][6]
-  test[c[0][2]][grade] = c[0][7]
+  jsonResult[c[0][2]][lastName] = c[0][0]
+  jsonResult[c[0][2]][firstName] = c[0][1]
+  jsonResult[c[0][2]][SSN] = c[0][2]
+  jsonResult[c[0][2]][Test1] = c[0][3]
+  jsonResult[c[0][2]][Test2] = c[0][4]
+  jsonResult[c[0][2]][Test3] = c[0][5]
+  jsonResult[c[0][2]][Test4] = c[0][6]
+  jsonResult[c[0][2]][grade] = c[0][7]
 
-  const stringify = JSON.stringify(test)
-  const parse = JSON.parse(stringify)
-  console.log(parse)
+  console.log(jsonResult)
 });
