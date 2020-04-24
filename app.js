@@ -4,31 +4,13 @@ const csv       = require('csv-parser')
 const filepath  = './grades.csv'
 
 const json = {}
-// createReadStream() method
-// fs.createReadStream(filepath)
-//     // checks for errors with the given filepath before we start trying to pipe in its data.
-//     .on('error', () => {
-//         // handle error
-//     })
-//     // begins to pipe data into our ReadStream
-//     .pipe(csv())
-//     // the keys are stored as strings, bracket notation must be used to acces the values
-//     // if the keys don't have special chars or spaces, dot notation can be used
-//     .on('data', (data) => {
-//         // console.log(`${data['Last name']}`);
-//         // console.log(data)
-//       console.log(data[' "First name"'])
-//     })
-//     //  listens for the end of the CSV. You can use this event to call methods you need after the entire file is read.
-//     .on('end', () => {
-//         // handle end of CSV
-//     })
 
 // without using library
 fs.readFile(filepath, 'utf8', function (err, data) {
-  let result = {}
-
-  let dataArray = data.split(/\r?\n/);
+  // set up object literal for JSON data
+  const jsonResult = {}
+  // An array consisting of each student data as strings
+  const dataArray = data.split(/\r?\n/);
   // the first line in the array is the column header(title), while the cleansedArray is the data
   const [columnData, ...cleansedArray] = dataArray
 
@@ -41,12 +23,11 @@ fs.readFile(filepath, 'utf8', function (err, data) {
 
   // array destructuring to get column header(title) 
   const [lastName, firstName, SSN, Test1, Test2, Test3, Test4, final, grade] = columnHeaderArray
-  // console.log(cleansedArray) // => one array of each entry(student) as strings
-  const c = cleansedArray.map(student => {
-    // split returns an array of arrays, where the sub arrays are the entries
-    const split = student.split(',')
-    // trim and remove double quotes
-    const a = split.map(item => {
+  // function further splits each student data into an array to handle white space trimming and removing quotes if necessary
+  const trimAndRemoveQuotes = function(data) {
+    const split = data.split(',')
+    const trim = split.map(item => {
+
       const trimmedWhiteSpace = item.trim()
 
       if(trimmedWhiteSpace.includes("\"") === true) {
@@ -55,24 +36,24 @@ fs.readFile(filepath, 'utf8', function (err, data) {
       }
       return trimmedWhiteSpace
     })
-    return a
-  })
-
-  // init JSON
-  const jsonResult = {}
+    return trim
+  }
+  
+  // the 
+  const formattedDataInArray = cleansedArray.map(student => trimAndRemoveQuotes(student)) 
 
   // create a loop to create JSON data
 
-  jsonResult[c[0][2]] = {}
+  jsonResult[formattedDataInArray[0][2]] = {}
 
-  jsonResult[c[0][2]][lastName] = c[0][0]
-  jsonResult[c[0][2]][firstName] = c[0][1]
-  jsonResult[c[0][2]][SSN] = c[0][2]
-  jsonResult[c[0][2]][Test1] = c[0][3]
-  jsonResult[c[0][2]][Test2] = c[0][4]
-  jsonResult[c[0][2]][Test3] = c[0][5]
-  jsonResult[c[0][2]][Test4] = c[0][6]
-  jsonResult[c[0][2]][grade] = c[0][7]
+  jsonResult[formattedDataInArray[0][2]][lastName] = formattedDataInArray[0][0]
+  jsonResult[formattedDataInArray[0][2]][firstName] = formattedDataInArray[0][1]
+  jsonResult[formattedDataInArray[0][2]][SSN] = formattedDataInArray[0][2]
+  jsonResult[formattedDataInArray[0][2]][Test1] = formattedDataInArray[0][3]
+  jsonResult[formattedDataInArray[0][2]][Test2] = formattedDataInArray[0][4]
+  jsonResult[formattedDataInArray[0][2]][Test3] = formattedDataInArray[0][5]
+  jsonResult[formattedDataInArray[0][2]][Test4] = formattedDataInArray[0][6]
+  jsonResult[formattedDataInArray[0][2]][grade] = formattedDataInArray[0][7]
 
-  console.log(jsonResult)
+  console.log(formattedDataInArray)
 });
